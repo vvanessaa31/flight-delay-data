@@ -1,0 +1,70 @@
+---
+title: "ISTA 320 Data Visualization Challenge 3"
+author: "vanessa rivas-davila"
+date: "Fall 2025"
+output:
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+library(tidyverse)
+opts_chunk$set(echo = TRUE)
+```
+
+We will be working with the flight data from 2009 and 2018.
+
+# Read data in
+
+There are two data files (`csv` format) inside the assignment in this project. Read both files (using `read_csv()`), and combine them into one data frame (using `bind_rows()`). Mutate the year variable so it is a factor (and not a numerical variable).
+
+```{r}
+# read data in
+flight_delays_data_2009 <- read_csv("/Users/vanessarivasdavila/Documents/2026/ISTA 320/hw4/datahw/2009.csv")
+flight_delays_data_2018 <- read_csv("/Users/vanessarivasdavila/Documents/2026/ISTA 320/hw4/datahw/2018.csv")
+
+# combine data
+flight_delay_data_2009_2018 <- bind_rows(flight_delays_data_2009, flight_delays_data_2018)
+
+# inspect data
+glimpse(flight_delay_data_2009_2018)
+
+# mutate year so year is a factor
+flight_delay_data_2009_2018 <- flight_delay_data_2009_2018 %>%
+  mutate(year = as.factor(year))
+```
+
+# Scatterplots
+
+> QUESTION 1: What's the relationship between mean arrival delay time and mean departure delay time? These two variables are in minutes.
+    - There seems to be a positive relationship between departure delays and late arives between the years. Its reasonable because as they leave later equals and positive correlation with arriving later as well. 
+
+> QUESTION 2: Is this relationship similar across the two years in the data?
+    - Between the two years they seem to reflect the imact of late departures and late arrivals even in later years. I guess it would be alittle more controlled in timiing because they art exactly o top of eachother and the data for 2028 is lower meaning that the average was a lower correlation between the 2009 data. 
+
+To answer these two questions, draw a scatterplot mapping the numerical variables to the axes and the categorical variable to color.
+
+```{r}
+flight_delay_data_2009_2018 %>%
+  ggplot(aes(x= mean_departure_delay,y =  mean_arrival_delay, color = year )) +
+  geom_point()
+```
+
+TYPE YOUR ANSWER TO THE TWO QUESTIONS ABOVE (i.e., your interpretation of the scatterplot you produced) HERE -- REPLACE THIS TEXT WITH YOUR ANSWER
+
+> QUESTION 3: Is there a relationship between mean distance of the flight and mean arrival delay?
+      - There seems to be no correlation between these to features. They are very scattered even with the regression line. They seem to have no correlation to eachother which would be how late they would arrive and and the distance they go on the flight. Example they could fly a short diatance but the delay could be very high. 
+      
+      
+      
+      
+To answer this question, draw a scatterplot with the two numerical variables mentioned in the question. You can optionally run correlation or linear regression with these two variables to answer this question as well (in addition to the scatterplot).
+
+```{r}
+flight_delay_data_2009_2018 %>%
+  ggplot(aes(x= mean_distance, y = mean_arrival_delay, color = year)) + 
+  geom_point()+ 
+  geom_smooth(method = "lm")
+```
+
+TYPE YOUR ANSWER TO THE TWO QUESTIONS ABOVE (i.e., your interpretation of the scatterplot you produced) HERE -- REPLACE THIS TEXT WITH YOUR ANSWER
